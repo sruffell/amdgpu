@@ -710,6 +710,12 @@ struct queue {
 	void *gang_ctx_cpu_ptr;
 
 	struct amdgpu_bo *wptr_bo_gart;
+
+	/* The VRAM-resident MQD BO (mqd_on_vram()) is unpinned at S4 suspend so
+	 * TTM evicts it into the hibernation image, and repinned on resume. Set
+	 * while the BO is unpinned so the resume path knows to repin it.
+	 */
+	bool needs_mqd_repin;
 };
 
 enum KFD_MQD_TYPE {
